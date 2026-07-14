@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } catch (e) {}
     }
 
-    const targetDate = new Date(2027, 2, 8, 0, 0, 0)
+    const targetDate = new Date(2027, 1, 8, 0, 0, 0)
 
     function updateCountdown() {
         const now = new Date()
