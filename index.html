@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Me</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/profile.png">
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="noise"></div>
+
+<div class="card">
+    <div class="header">
+        <span id="toggle-menu" style="cursor:pointer;">= Me</span>
+        <span class="menu" id="interests-btn" style="cursor:pointer;">Interests</span>
+        <img id="theme-toggle" src="img/btn.png" alt="cambiar tema" class="theme-toggle-btn">
+    </div>
+
+    <div id="card-anim" class="anim-container">
+        <div class="content">
+            <div class="left">
+                <img src="img/profile.jpg" alt="profile" class="main-pfp">
+                <p class="desc">15y.</p>
+                <p class="desc">frontend dev, gamedev,<br> pegado a una pantalla.</p>
+                <div class="skills">
+                    <img src="https://cdn.simpleicons.org/javascript/F7DF1E" title="JS">
+                    <img src="https://cdn.simpleicons.org/html5/E34F26" title="HTML5">
+                    <img src="https://api.iconify.design/ic:baseline-css.svg?color=%23264de4" title="CSS3">
+                    <img src="https://api.iconify.design/simple-icons:godotengine.svg?color=%23478CBF" title="Godot">
+                </div>
+            </div>
+
+            <div class="center">
+                <h2 data-text="Me">Me</h2>
+                <b id="mood">Mood: bored</b>
+                <p class="quote">
+                    "Hay que sufrir. Sufrir sin a ninguna ilusion: Sufrir para comprender"<br>
+                    <span>-Fiodor Dostoyevski</span>
+                </p>
+                <div class="icons">  
+                    <a href="https://discord.com/users/729369718695133274" target="_blank">
+                        <img src="https://cdn.simpleicons.org/discord/5865F2" alt="Discord">
+                    </a>  
+                    <a href="https://www.instagram.com/muchomaicraxdd?igsh=NXYzeDI5OXRubjRr" target="_blank">
+                        <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram">
+                    </a>
+                    <a href="https://open.spotify.com/user/31b3l7oe45bnzcfalio527nfdlyu?si=MXhm2IvJTBuf6F8XP83kPA" target="_blank">
+                        <img src="https://cdn.simpleicons.org/spotify/1DB954" alt="Spotify">
+                    </a>
+                </div>
+                <div id="countdown">--d --h --m</div>
+            </div>
+
+            <div class="right">
+                <p class="status">@muchomaicraxd · <span id="status">Offline</span></p>
+                <p class="location">[Chile/CL]</p>
+                <div class="gallery" id="gallery">
+                    <img id="gal0" src="img/saku.jpg">
+                    <img id="gal1" src="img/k.jpg">
+                    <img id="gal2" src="img/k1.jpg">
+                    <img id="gal3" src="img/k2.jpg">
+                    <img id="gal4" src="img/k3.jpg">
+                    <img id="gal5" src="img/sh.jpg">
+                </div>
+                <p class="music">
+                    Listening from Spotify:<br>
+                    <span id="song">---</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="interests-anim" class="interests-slider collapsed">
+        <div class="content-interests">
+            <h3>weas que me gustan</h3>
+
+            <div class="interests-row">
+                <img src="img/int.jpg" class="interest-img">
+                <div class="interest-texts">
+                    <p>programar, aprender, procastinar, guitarra, comer, dormir, cocinar, jugar sin parar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="celebration-sound" src="celebration.mp3" preload="auto"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

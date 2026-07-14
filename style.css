@@ -1,0 +1,482 @@
+@font-face {
+    font-family: 'Minecraft-Original';
+    src: url('https://cdn.rawgit.com/h-projects/font-minecraftia/master/fonts/minecraftia-regular-webfont.woff');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --body-bg: #0a0a0a;
+    --grid-line: rgba(255,255,255,0.03);
+    --card-bg: #121212;
+    --card-border: #666;
+    --card-shadow: 0 0 0 1px #000, 0 0 25px rgba(255,255,255,0.08), 4px 4px 0px rgba(0,0,0,0.4);
+    --scan-color: #ccc;
+    --header-bg: #1a1a1a;
+    --header-border: #555;
+    --text-main: #d8d8d8;
+    --menu-color: #bbb;
+    --menu-hover: #fff;
+    --glow-color: rgba(255,255,255,0.7);
+    --desc-color: #999;
+    --title-color: #fff;
+    --mood-color: #888;
+    --quote-color: #aaa;
+    --quote-border: #555;
+    --countdown-color: #888;
+    --countdown-border: #444;
+    --status-color: #ddd;
+    --location-color: #999;
+    --gallery-border: #555;
+    --music-border: #444;
+    --music-color: #999;
+    --interests-bg: #1a1a1a;
+    --interests-border: #555;
+    --interests-h3-color: #ddd;
+    --interests-p-color: #999;
+    --img-filter: grayscale(100%) contrast(1.15) brightness(0.95);
+    --img-filter-hover: grayscale(100%) contrast(1.3) brightness(1.1);
+    --gallery-filter: grayscale(100%) contrast(1.2) brightness(0.85);
+    --gallery-filter-hover: grayscale(100%) contrast(1.4) brightness(1.15);
+    --icon-filter: grayscale(100%) brightness(1.6);
+    --icon-filter-hover: grayscale(0%) brightness(1.1);
+    --toggle-filter: invert(1);
+}
+
+body.light {
+    --body-bg: #f4f4f4;
+    --grid-line: transparent;
+    --card-bg: #eaeaea;
+    --card-border: #999;
+    --card-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+    --scan-color: #999;
+    --header-bg: #dcdcdc;
+    --header-border: #999;
+    --text-main: #222;
+    --menu-color: #555;
+    --menu-hover: #000;
+    --glow-color: rgba(0,0,0,0.15);
+    --desc-color: #222;
+    --title-color: #222;
+    --mood-color: #555;
+    --quote-color: #333;
+    --quote-border: #999;
+    --countdown-color: #444;
+    --countdown-border: #999;
+    --status-color: #222;
+    --location-color: #333;
+    --gallery-border: #777;
+    --music-border: #999;
+    --music-color: #333;
+    --interests-bg: #dcdcdc;
+    --interests-border: #999;
+    --interests-h3-color: #222;
+    --interests-p-color: #222;
+    --img-filter: grayscale(100%);
+    --img-filter-hover: grayscale(0%);
+    --gallery-filter: grayscale(100%);
+    --gallery-filter-hover: grayscale(0%);
+    --icon-filter: grayscale(100%);
+    --icon-filter-hover: grayscale(0%);
+    --toggle-filter: none;
+}
+
+body { 
+    background: var(--body-bg);
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-start;   /* <- evita que .card se estire infinito */
+    padding-top: 40px; 
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition: background 0.35s ease;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.025) 0px,
+        rgba(255,255,255,0.025) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+    z-index: 999;
+}
+
+.noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 998;
+    opacity: 0.02;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: flicker 0.15s infinite alternate;
+}
+
+body.light .scanlines,
+body.light .noise {
+    display: none;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.015; }
+    100% { opacity: 0.035; }
+}
+
+.card {
+    width: 650px; 
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    zoom: 1.5;
+    overflow: hidden;
+    font-size: 25px;
+    position: relative;
+    z-index: 1;
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--scan-color), transparent);
+    animation: scan 4s linear infinite;
+    transition: opacity 0.3s ease;
+}
+
+.card.scan-hidden::before {
+    opacity: 0;
+    animation: none;
+}
+
+@keyframes scan {
+    0% { transform: translateY(0); opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { transform: translateY(400px); opacity: 0; }
+}
+
+#toggle-menu, .menu, .desc, .center h2, #mood, .status, .location, .music, h3, #song, #countdown, .interests-text, .interests-text p {
+    font-family: 'Minecraft-Original', sans-serif !important;
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    text-transform: none;
+    color: var(--text-main);
+}
+
+.header { 
+    display: flex; 
+    align-items: center;
+    padding: 8px 12px; 
+    border-bottom: 1px solid var(--header-border); 
+    background: var(--header-bg);
+    font-size: 14px;
+    letter-spacing: 1px;
+    gap: 14px;
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+#toggle-menu, .menu {
+    color: var(--menu-color) !important;
+    transition: color 0.2s;
+}
+#toggle-menu:hover, .menu:hover {
+    color: var(--menu-hover) !important;
+    text-shadow: 0 0 8px var(--glow-color);
+}
+.menu {
+    margin-left: auto;
+}
+
+.theme-toggle-btn {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    cursor: pointer;
+    filter: var(--toggle-filter);
+    border: 1px solid var(--header-border);
+    padding: 2px;
+    transition: transform 0.2s ease, filter 0.3s ease, border-color 0.3s ease;
+}
+.theme-toggle-btn:hover {
+    transform: scale(1.15);
+}
+
+.content { 
+    display: grid; 
+    grid-template-columns: 1.9fr 2.5fr 1fr; 
+    gap: 15px; 
+    padding: 15px; 
+    background: var(--card-bg);
+    transition: background 0.35s ease;
+}
+
+.left .main-pfp { 
+    width: 160px; 
+    height: 160px;
+    object-fit: cover;
+    border: 1px solid var(--gallery-border);
+    filter: var(--img-filter);
+    margin-bottom: 12px;
+    transition: 0.25s;
+}
+.left .main-pfp:hover {
+    filter: var(--img-filter-hover);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.desc { 
+    font-size: 12px !important; 
+    line-height: 1.5; 
+    color: var(--desc-color) !important;
+    margin: 4px 0; 
+}
+
+.skills { 
+    display: flex; 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+.skills img { 
+    width: 22px; 
+    filter: var(--icon-filter);
+    transition: 0.2s ease;
+    opacity: 0.7;
+}
+.skills img:hover { 
+    filter: var(--icon-filter-hover);
+    transform: scale(1.3);
+    opacity: 1;
+}
+
+.center h2 { 
+    margin: 0; 
+    font-size: 26px;
+    position: relative;
+    color: var(--title-color) !important;
+    letter-spacing: 2px;
+}
+
+.center h2:hover {
+    animation: glitch 0.4s linear;
+}
+.center h2::before,
+.center h2::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    opacity: 0;
+}
+.center h2:hover::before {
+    color: var(--title-color);
+    opacity: 0.7;
+    animation: glitchTop 0.4s linear;
+    clip-path: inset(0 0 60% 0);
+}
+.center h2:hover::after {
+    color: var(--menu-color);
+    opacity: 0.7;
+    animation: glitchBottom 0.4s linear;
+    clip-path: inset(60% 0 0 0);
+}
+@keyframes glitchTop {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, -2px); }
+    40% { transform: translate(3px, 1px); }
+    60% { transform: translate(-2px, 1px); }
+    80% { transform: translate(2px, -1px); }
+    100% { transform: translate(0); }
+}
+@keyframes glitchBottom {
+    0% { transform: translate(0); }
+    20% { transform: translate(3px, 1px); }
+    40% { transform: translate(-3px, -1px); }
+    60% { transform: translate(2px, -2px); }
+    80% { transform: translate(-2px, 2px); }
+    100% { transform: translate(0); }
+}
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(1px, -1px); }
+    60% { transform: translate(-1px, -1px); }
+    80% { transform: translate(1px, 1px); }
+}
+
+#mood { 
+    font-size: 15px; 
+    color: var(--mood-color) !important;
+    display: block; 
+    margin-bottom: 15px; 
+}
+#mood::before {
+    content: "> ";
+    color: var(--mood-color);
+}
+
+.quote { 
+    font-size: 14px; 
+    font-style: italic; 
+    line-height: 1.6; 
+    color: var(--quote-color);
+    border-left: 2px solid var(--quote-border);
+    padding-left: 10px;
+    transition: border-color 0.35s ease, color 0.35s ease;
+}
+
+.icons { display: flex; gap: 10px; margin-top: 15px; }
+.icons img { 
+    width: 30px; 
+    filter: var(--icon-filter);
+    transition: 0.2s ease;
+    opacity: 0.75;
+}
+.icons img:hover { 
+    filter: var(--icon-filter-hover) drop-shadow(0 0 6px var(--glow-color));
+    transform: scale(1.3);
+    opacity: 1;
+}
+
+#countdown { 
+    margin-top: 25px; 
+    font-size: 15px; 
+    color: var(--countdown-color) !important;
+    border: 1px dashed var(--countdown-border);
+    padding: 6px 10px;
+    display: inline-block;
+    transition: border-color 0.35s ease, color 0.35s ease;
+}
+
+.status { 
+    font-size: 14px; 
+    font-weight: bold;
+    color: var(--status-color) !important;
+}
+.location { 
+    font-size: 13px; 
+    opacity: 0.8; 
+    margin-bottom: 10px;
+    color: var(--location-color) !important;
+}
+
+.gallery { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5px; 
+}
+.gallery img { 
+    width: 70px; 
+    height: 60px; 
+    object-fit: cover; 
+    border: 1px solid var(--gallery-border);
+    filter: var(--gallery-filter);
+    transition: 0.25s ease;
+}
+.gallery img:hover { 
+    filter: var(--gallery-filter-hover);
+    box-shadow: 0 0 10px var(--glow-color);
+    transform: scale(1.05);
+    z-index: 2;
+    position: relative;
+}
+
+.gallery img.tile-out {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: var(--gallery-filter-hover) blur(2px);
+}
+.gallery img.tile-in {
+    opacity: 1;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px var(--glow-color);
+}
+
+.music { 
+    font-size: 14px; 
+    border-top: 1px dashed var(--music-border); 
+    margin-top: 15px; 
+    padding-top: 10px;
+    color: var(--music-color) !important;
+    transition: border-color 0.35s ease, color 0.35s ease;
+}
+
+.interests-slider {
+    max-height: 600px; 
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, background 0.35s ease, border-color 0.35s ease;
+    opacity: 1;
+    background: var(--interests-bg);
+    border-top: 1px solid var(--interests-border);
+}
+.interests-slider.collapsed { max-height: 0; opacity: 0; }
+
+.content-interests { padding: 18px; }
+.content-interests h3 { 
+    font-size: 16px; 
+    border-bottom: 1px dashed var(--interests-border); 
+    margin-bottom: 12px;
+    color: var(--interests-h3-color) !important;
+    letter-spacing: 1px;
+    transition: border-color 0.35s ease, color 0.35s ease;
+}
+.content-interests p { 
+    font-size: 13px; 
+    color: var(--interests-p-color) !important;
+}
+
+.center {
+    margin-left: -10px;
+}
+
+.interests-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.interest-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    filter: var(--gallery-filter);
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    border: 1px solid var(--gallery-border);
+}
+
+.interest-texts p {
+    margin: 0 0 6px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--interests-p-color) !important;
+}
+
+.interest-texts {
+    font-family: 'Minecraft-Original', sans-serif !important;
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    text-transform: none;
+}
+
+.anim-container {
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    opacity: 1;
+}
+.anim-container.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
