@@ -15,7 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
     let lastPlayingTime = Date.now()
     let changed = false
 
-    // ---- Tema claro / oscuro ----
     const savedTheme = localStorage.getItem("theme")
     if (savedTheme === "light") {
         document.body.classList.add("light")
@@ -28,7 +27,6 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    // ---- Colapsar menú ----
     if (toggleBtn) {
         toggleBtn.addEventListener("click", () => {
             cardAnim.classList.toggle("collapsed")
@@ -86,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } catch (e) {}
     }
 
-    const targetDate = new Date(2026, 1, 8, 0, 0, 0)
+    const targetDate = new Date(2027, 2, 8, 0, 0, 0)
 
     function updateCountdown() {
         const now = new Date()
@@ -138,7 +136,6 @@ window.addEventListener('DOMContentLoaded', () => {
     updateAllData()
     setInterval(updateAllData, 5000)
 
-    // ---- Gallery tile animation (Linux WM style, sin repetir) ----
 
     const galleryPool = [
         "img/saku.jpg", "img/k.jpg", "img/k1.jpg",
