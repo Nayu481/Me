@@ -480,3 +480,52 @@ body.light .noise {
     max-height: 0;
     opacity: 0;
 }
+
+.websites {
+    margin-top: 24px;
+    font-family: 'Minecraft-Original', sans-serif;
+}
+
+.website-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: grid;
+    gap: 10px;
+}
+
+.website-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--interests-border);
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.website-link small {
+    display: block;
+    margin-top: 8px;
+    color: var(--interests-p-color);
+    font-size: 11px;
+}
+
+.website-link:hover,
+.website-link:focus-visible {
+    outline: 2px solid var(--menu-hover);
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
