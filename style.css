@@ -514,6 +514,18 @@ body.light .noise {
     font-size: 11px;
 }
 
+.website-tech {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.website-tech img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
 .website-link:hover,
 .website-link:focus-visible {
     outline: 2px solid var(--menu-hover);
